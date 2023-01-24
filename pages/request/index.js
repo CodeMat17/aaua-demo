@@ -19,6 +19,7 @@ import {
   useUser,
 } from "@supabase/auth-helpers-react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const delius = Delius({ weight: "400", subsets: ["latin"] });
@@ -30,6 +31,7 @@ const MakeRequest = () => {
   const supabase = useSupabaseClient();
   const session = useSession();
   const user = useUser();
+  const router = useRouter();
   const [full_name, setFullname] = useState(null);
   const [dept, setDept] = useState(null);
   const [matric_no, setMatricNo] = useState(null);
@@ -40,6 +42,12 @@ const MakeRequest = () => {
   const general = process.env.NEXT_PUBLIC_GENERAL;
   const head1secret = process.env.NEXT_PUBLIC_HEAD_1_SECRET;
   const head2secret = process.env.NEXT_PUBLIC_HEAD_2_SECRET;
+
+  useEffect(() => {
+    if (!session) {
+     router.push('/')
+   }
+  }, [session]);
 
   useEffect(() => {
     getProfile();
