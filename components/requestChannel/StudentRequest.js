@@ -7,10 +7,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
-  useSession,
   useSupabaseClient,
   useUser,
-  // useUser,
 } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
