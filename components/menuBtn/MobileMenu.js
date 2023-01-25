@@ -23,10 +23,8 @@ export const MobileMenu = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const bgAlt = useColorModeValue("gray.200", "gray.800");
 
-  const signoutButt = () => {
-  supabase.auth.signOut();
-    onClose()
-}
+ 
+
 
   return (
     <Box display={{ md: "none" }}>
@@ -47,20 +45,17 @@ export const MobileMenu = () => {
             <LogoComponent />
           </DrawerHeader>
 
-          <DrawerBody>
-           Mobile menu content will appear here.
-          </DrawerBody>
+          <DrawerBody>Mobile menu content will appear here.</DrawerBody>
           <DrawerFooter>
-                 
-              <Button
-                // onClick={signoutButt}
-                w='full'
-                bg='red'
-                color='white'
-                variant='outline'
-                borderColor='gray.400'>
-                Logout
-              </Button>
+            <Button
+              onClick={() => supabase.auth.signOut()}
+              w='full'
+              bg='red'
+              color='white'
+              variant='outline'
+              borderColor='gray.400'>
+              Logout
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

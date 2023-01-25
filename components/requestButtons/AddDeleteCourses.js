@@ -19,28 +19,24 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import {
-  useSession,
-  useSupabaseClient,
-  useUser,
-} from "@supabase/auth-helpers-react";
-import { useRouter } from "next/router";
-import { useEffect, useState, useMemo } from "react";
-import dynamic from "next/dynamic";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import "easymde/dist/easymde.min.css";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
 // import { useMemo } from "react/cjs/react.development";
 
-const SimpleMDE = dynamic(() => import ('react-simplemde-editor'), {ssr: false});
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
-
-const AddDeleteCourses = ({userID, name, dept, matricNO}) => {
+const AddDeleteCourses = ({session, name, deptt, matricNo }) => {
   const supabase = useSupabaseClient();
-  // const session = useSession();
-  // const user = useUser();
+  const user = useUser();
   const toast = useToast();
-  // const [full_name, setFullname] = useState(null);
-  // const [matric_no, setMatricNo] = useState(null);
-  // const [dept, setDept] = useState(null);
+  const [full_name, setFullname] = useState(name);
+  const [matric_no, setMatricNo] = useState(matricNo);
+  const [dept, setDept] = useState(deptt);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -49,8 +45,6 @@ const AddDeleteCourses = ({userID, name, dept, matricNO}) => {
   const router = useRouter();
   const bgButton = useColorModeValue("gray.50", "gray.700");
 
-//  console.log(description)
-
   const newOptions = useMemo(() => {
     return {
       spellChecker: false,
@@ -58,48 +52,35 @@ const AddDeleteCourses = ({userID, name, dept, matricNO}) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   getProfile();
-  // }, [session]);
+  useEffect(() => {
+    if (!session) {
+      router.push("/");
+    }
+  }, [session]);
 
-  // async function getProfile() {
-  //   try {
-  //     //   setLoading(true);
-  //     let { data, error, status } = await supabase
-  //       .from("profiles")
-  //       .select(`full_name, dept, matric_no`)
-  //       .eq("id", user.id)
-  //       .single();
-
-  //     if (error && status !== 406) {
-  //       throw error;
-  //     }
-
-  //     if (data) {
-  //       setFullname(data.full_name);
-  //       setMatricNo(data.matric_no);
-  //       setDept(data.dept);
-  //     }
-  //   } catch (error) {
-  //     // alert("Error loading user data!");
-  //     console.log(error);
-  //   } finally {
-  //     //   setLoading(false);
-  //   }
-  // }
+  useEffect(() => {
+    if (name) {
+      setFullname(name);
+    }
+    if (deptt) {
+      setDept(deptt);
+    }
+    if (matricNo) {
+      setMatricNo(matricNo);
+    }
+  });
 
   const updateRequests = async () => {
- 
     try {
       setPositing(true);
       const { data, error } = await supabase.from("requests").insert([
         {
           title,
           description,
-          user_id: userID,
-          name,
+          user_id: user.id,
+          full_name,
           dept,
-          matricNO,
+          matric_no,
           status: "processing",
           to: "hod",
         },
@@ -119,7 +100,7 @@ const AddDeleteCourses = ({userID, name, dept, matricNO}) => {
           isClosable: true,
         });
       }
-      router.reload()
+      router.reload();
     } catch (error) {
       toast({
         title: "Error!",
@@ -135,7 +116,7 @@ const AddDeleteCourses = ({userID, name, dept, matricNO}) => {
       setDescription("");
       setPositing(false);
       onClose();
-    //  router.push('/request')
+      //  router.push('/request')
     }
   };
 
@@ -185,20 +166,20 @@ const AddDeleteCourses = ({userID, name, dept, matricNO}) => {
                   placeholder='Enter your subject here...'
                 />
               </FormControl>
-           
-                <FormControl isRequired>
-                  <FormLabel mb='0'>MESSAGE:</FormLabel>
-                  <SimpleMDE
-                    id='editor'
-                    value={description}
-                    toolbar="false"
-                    // onChange={onChange}
-                    onChange={(description) => setDescription(description)}
-                    options={newOptions}
-                    // options={{ toolbar: false, spellChecker: false, autofocus: false }}
-                  />
-                </FormControl>
-              </Box>
+
+              <FormControl isRequired>
+                <FormLabel mb='0'>MESSAGE:</FormLabel>
+                <SimpleMDE
+                  id='editor'
+                  value={description}
+                  toolbar='false'
+                  // onChange={onChange}
+                  onChange={(description) => setDescription(description)}
+                  options={newOptions}
+                  // options={{ toolbar: false, spellChecker: false, autofocus: false }}
+                />
+              </FormControl>
+            </Box>
           </ModalBody>
           <Divider />
           <ModalFooter>

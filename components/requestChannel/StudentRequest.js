@@ -10,16 +10,16 @@ import {
   useSession,
   useSupabaseClient,
   useUser,
+  // useUser,
 } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import RequestApproval from "../RequestApproval";
 import AddDeleteCourses from "../requestButtons/AddDeleteCourses";
 
-const StudentRequest = ({user}) => {
+const StudentRequest = ({session}) => {
   const supabase = useSupabaseClient();
-  const session = useSession();
-  // const user = useUser();
+  const user = useUser();
   const [full_name, setFullname] = useState(null);
   const [matric_no, setMatricNo] = useState(null);
   const [dept, setDept] = useState(null);
@@ -104,10 +104,10 @@ const StudentRequest = ({user}) => {
               Name Correction
             </Flex>
             <AddDeleteCourses
-              userID={user.id}
+            session={session}
               name={full_name}
-              dept={dept}
-              matricNO={matric_no}
+              deptt={dept}
+              matricNo={matric_no}
             />
 
             <Flex

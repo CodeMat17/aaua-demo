@@ -27,7 +27,7 @@ const NavHeader = () => {
             <MobileMenu />
             <Button
               display={{ base: "none", md: "flex" }}
-              // onClick={() => supabase.auth.signOut()}
+              onClick={() => supabase.auth.signOut()}
               variant='outline'
               color='white'
               borderColor='gray.400'>

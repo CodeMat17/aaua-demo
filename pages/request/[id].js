@@ -87,7 +87,7 @@ const RequestDetails = ({ request }) => {
           isClosable: true,
         });
       }
-      router.push("/request");
+      router.back();
     } catch (error) {
       toast({
         title: "Error!",
@@ -125,7 +125,7 @@ const RequestDetails = ({ request }) => {
           isClosable: true,
         });
       }
-      router.push("/request");
+     router.back();
     } catch (error) {
       toast({
         title: "Error!",
@@ -163,7 +163,7 @@ const RequestDetails = ({ request }) => {
           isClosable: true,
         });
       }
-      router.push("/request");
+     router.back();
     } catch (error) {
       toast({
         title: "Error!",

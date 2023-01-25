@@ -21,7 +21,6 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-// import {useUser} from '../../context/user'
 
 const delius = Delius({ weight: "400", subsets: ["latin"] });
 
@@ -41,28 +40,6 @@ const MakeRequest = () => {
   const general = process.env.NEXT_PUBLIC_GENERAL;
   const head1secret = process.env.NEXT_PUBLIC_HEAD_1_SECRET;
   const head2secret = process.env.NEXT_PUBLIC_HEAD_2_SECRET;
-
-  // useEffect(() => {
-  //   setUserID(user);
-  //   const { data: authListener } = supabase.auth.onAuthStateChange(
-  //     (event, session) => {
-  //       console.log(`Supbase auth event: ${event}`);
-  //       setUserID(session?.user ?? null);
-  //     }
-  //   );
-  //   // return () => {
-  //   //   authListener.unsubscribe();
-  //   // };
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
-
-  console.log("userid", user);
-
-  useEffect(() => {
-    if (user === null) {
-      router.reload();
-    }
-  }, [user]);
 
   useEffect(() => {
     if (!session) {
@@ -102,48 +79,49 @@ const MakeRequest = () => {
   }
 
   return (
-    <main className={delius.className}>
-      <NavHeader />
-      {session === null && full_name === null ? (
-        <VStack py='24'>
-          <Spinner />
-          <Text letterSpacing='1px'>Fetching data, wait</Text>
-        </VStack>
-      ) : (
-        <Box maxW='6xl' mx='auto'>
-          <HStack ml='-1' spacing={[-1, 2]}>
-            <Image
-              alt='id logo'
-              src='/svgs/id-card.svg'
-              width={100}
-              height={90}
-            />
-            <Box lineHeight='5'>
-              <Text>Welcome!</Text>
-              <Text noOfLines='1' fontWeight='semibold' fontSize='lg'>
-                {full_name}
-              </Text>
-              <Text noOfLines='1'>{session?.user?.email}</Text>
-            </Box>
-          </HStack>
+    <Text>page is relegated</Text>
+    // <main className={delius.className}>
+    //   <NavHeader />
+    //   {session === null && full_name === null ? (
+    //     <VStack py='24'>
+    //       <Spinner />
+    //       <Text letterSpacing='1px'>Fetching data, wait</Text>
+    //     </VStack>
+    //   ) : (
+    //     <Box maxW='6xl' mx='auto'>
+    //       <HStack ml='-1' spacing={[-1, 2]}>
+    //         <Image
+    //           alt='id logo'
+    //           src='/svgs/id-card.svg'
+    //           width={100}
+    //           height={90}
+    //         />
+    //         <Box lineHeight='5'>
+    //           <Text>Welcome!</Text>
+    //           <Text noOfLines='1' fontWeight='semibold' fontSize='lg'>
+    //             {full_name}
+    //           </Text>
+    //           <Text noOfLines='1'>{session?.user?.email}</Text>
+    //         </Box>
+    //       </HStack>
 
-          <Divider mb='6' />
+    //       <Divider mb='6' />
 
-          {role === null && (
-            <VStack py='24'>
-              <Text fontSize='xl' maxW='xs' textAlign='center'>
-                Hello {full_name}, you have not been provisioned to use this
-                channel. Kindly contact the admin.
-              </Text>
-            </VStack>
-          )}
-          {role === general && <StudentRequest user={user} />}
-          {role === head1secret && <HodPage />}
-          {role === head2secret && <DeanPage />}
-        </Box>
-      )}
-      <Footer />
-    </main>
+    //       {role === null && (
+    //         <VStack py='24'>
+    //           <Text fontSize='xl' maxW='xs' textAlign='center'>
+    //             Hello {full_name}, you have not been provisioned to use this
+    //             channel. Kindly contact the admin.
+    //           </Text>
+    //         </VStack>
+    //       )}
+    //       {role === general && <StudentRequest user={user} />}
+    //       {role === head1secret && <HodPage />}
+    //       {role === head2secret && <DeanPage />}
+    //     </Box>
+    //   )}
+    //   <Footer />
+    // </main>
   );
 };
 

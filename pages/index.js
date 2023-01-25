@@ -1,5 +1,5 @@
-import MainEntry from "@/components/MainEntry";
-import { HStack, Text, VStack } from "@chakra-ui/react";
+import Account from "@/components/Account";
+import { Text, VStack } from "@chakra-ui/react";
 import { Delius } from "@next/font/google";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
@@ -33,12 +33,8 @@ export default function Home() {
               />
               <Text px='6' fontWeight='bold' fontSize='2xl'>
                 AAUA REQUEST PORTAL
-              </Text>
-              <HStack>
-               
+              </Text>                        
                 <Text fontSize='sm'>(Student / Staff)</Text>
-              </HStack>
-
               <Auth
                 supabaseClient={supabase}
                 appearance={{ theme: ThemeSupa }}
@@ -47,7 +43,8 @@ export default function Home() {
             </VStack>
           ) : (
             // <p>Account page will go here.</p>
-            <MainEntry />
+            // <MainEntry />
+            <Account session={session} />
           )}
        
       </main>
