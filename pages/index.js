@@ -24,20 +24,18 @@ export default function Home() {
       <main className={delius.className}>
      
           {!session ? (
-            <VStack pt='16'>
+            <VStack mx='4' pt='16'>
               <Image
                 alt='aaua logo'
                 src='/aaua_logo.png'
                 width={100}
                 height={100}
               />
-              <Text fontWeight='bold' fontSize='2xl'>
-                AAUA REQUEST CHANNEL
+              <Text px='6' fontWeight='bold' fontSize='2xl'>
+                AAUA REQUEST PORTAL
               </Text>
               <HStack>
-                <Text fontSize='xl' fontWeight='semibold'>
-                  Sign in
-                </Text>
+               
                 <Text fontSize='sm'>(Student / Staff)</Text>
               </HStack>
 

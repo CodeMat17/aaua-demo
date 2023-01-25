@@ -48,32 +48,19 @@ export const MobileMenu = () => {
           </DrawerHeader>
 
           <DrawerBody>
-            {/* {navLinks.map((link) => (
-              <Link
-                key={link.id}
-                to={link.to}
-                spy={true}
-                smooth={true}
-                offset={-80}
-                duration={500}>
-                <Button onClick={onClose} w='100%' my='2' variant='ghost'>
-                  {link.item}
-                </Button>
-              </Link>
-            ))} */}
-            {/* <NavContactUs /> */}
+           Mobile menu content will appear here.
           </DrawerBody>
           <DrawerFooter>
-            {session &&            
+                 
               <Button
-                onClick={signoutButt}
+                // onClick={signoutButt}
                 w='full'
                 bg='red'
                 color='white'
                 variant='outline'
                 borderColor='gray.400'>
                 Logout
-              </Button>}
+              </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

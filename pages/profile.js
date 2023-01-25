@@ -33,6 +33,12 @@ const ProfilePage = () => {
   const router = useRouter();
 
   useEffect(() => {
+    if (!session) {
+      router.push("/");
+    }
+  });
+
+  useEffect(() => {
     setTimeout(() => {
       setShowData(false);
     }, 2000);
@@ -111,99 +117,89 @@ const ProfilePage = () => {
     <>
       <NavHeader />
       <Box maxW='sm' mx='auto'>
-        {!session ? (
-          <VStack mt='24'>
-            <Text>"Session expired, go login."</Text>
-          </VStack>
-        ) : (
-          <>
-            {showData ? (
-              <VStack py='20'>
-                <Spinner />
-                <Text letterSpacing='2px' color='gray'>
-                  Fetching profile data
-                </Text>
-              </VStack>
-            ) : (
-              <VStack p='8' pos='relative' maxW='sm' mx='auto'>
-                <Box ml='4'>
-                  <Image
-                    alt='update profile'
-                    src='/svgs/add-user.svg'
-                    width={150}
-                    height={150}
-                  />
-                </Box>
-                <Text
-                  pos='absolute'
-                  top='40'
-                  fontWeight='semibold'
-                  fontSize='xl'>
-                  UPDATE YOUR PROFILE
-                </Text>
+        <>
+          {showData ? (
+            <VStack py='20'>
+              <Spinner />
+              <Text letterSpacing='2px' color='gray'>
+                Fetching profile data
+              </Text>
+            </VStack>
+          ) : (
+            <VStack p='8' pos='relative' maxW='sm' mx='auto'>
+              <Box ml='4'>
+                <Image
+                  alt='update profile'
+                  src='/svgs/add-user.svg'
+                  width={150}
+                  height={150}
+                />
+              </Box>
+              <Text pos='absolute' top='40' fontWeight='semibold' fontSize='xl'>
+                UPDATE YOUR PROFILE
+              </Text>
 
-                <FormControl pt='8'>
-                  <FormLabel fontSize='sm' mb='0'>
-                    Email
-                  </FormLabel>
-                  <Input
-                    id='email'
-                    type='email'
-                    value={session?.user?.email}
-                    disabled
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontSize='sm' mb='0'>
-                    Fullname
-                  </FormLabel>
-                  <Input
-                    id='fullname'
-                    type='text'
-                    value={full_name || ""}
-                    onChange={(e) => setFullname(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontSize='sm' mb='0'>
-                    Matric No.
-                  </FormLabel>
-                  <Input
-                    id='MatricNo'
-                    type='text'
-                    value={matric_no || ""}
-                    onChange={(e) => setMatricNo(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl pb='2'>
-                  <FormLabel fontSize='sm' mb='0'>
-                    Department
-                  </FormLabel>
-                  <Input
-                    id='department'
-                    type='text'
-                    value={dept || ""}
-                    onChange={(e) => setDept(e.target.value)}
-                  />
-                </FormControl>
+              <FormControl pt='8'>
+                <FormLabel fontSize='sm' mb='0'>
+                  Email
+                </FormLabel>
+                <Input
+                  id='email'
+                  type='email'
+                  value={session?.user?.email}
+                  disabled
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel fontSize='sm' mb='0'>
+                  Fullname
+                </FormLabel>
+                <Input
+                  id='fullname'
+                  type='text'
+                  value={full_name || ""}
+                  onChange={(e) => setFullname(e.target.value)}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel fontSize='sm' mb='0'>
+                  Matric No.
+                </FormLabel>
+                <Input
+                  id='MatricNo'
+                  type='text'
+                  value={matric_no || ""}
+                  onChange={(e) => setMatricNo(e.target.value)}
+                />
+              </FormControl>
+              <FormControl pb='2'>
+                <FormLabel fontSize='sm' mb='0'>
+                  Department
+                </FormLabel>
+                <Input
+                  id='department'
+                  type='text'
+                  value={dept || ""}
+                  onChange={(e) => setDept(e.target.value)}
+                />
+              </FormControl>
 
-                <Button
-                  onClick={() => updateProfile({ full_name, dept, matric_no })}
-                  isLoading={loading}
-                  colorScheme='blue'
-                  w='full'>
-                  UPDATE PROFILE
-                </Button>
-                <Button
-                  onClick={() => supabase.auth.signOut()}
-                  colorScheme='red'
-                  w='full'>
-                  SIGN OUT
-                </Button>
-              </VStack>
-            )}
-          </>
-        )}
+              <Button
+                onClick={() => updateProfile({ full_name, dept, matric_no })}
+                isLoading={loading}
+                colorScheme='blue'
+                w='full'>
+                UPDATE PROFILE
+              </Button>
+              <Button
+                onClick={() => supabase.auth.signOut()}
+                colorScheme='red'
+                w='full'>
+                SIGN OUT
+              </Button>
+            </VStack>
+          )}
+        </>
       </Box>
     </>
   );

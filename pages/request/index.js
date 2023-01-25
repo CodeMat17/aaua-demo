@@ -21,17 +21,16 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+// import {useUser} from '../../context/user'
 
 const delius = Delius({ weight: "400", subsets: ["latin"] });
-
-// import RequestApproval from "./RequestApproval";
-// import AddDeleteCourses from "./requestButtons/AddDeleteCourses";
 
 const MakeRequest = () => {
   const supabase = useSupabaseClient();
   const session = useSession();
   const user = useUser();
   const router = useRouter();
+  // const [userID, setUserID] = useState(null);
   const [full_name, setFullname] = useState(null);
   const [dept, setDept] = useState(null);
   const [matric_no, setMatricNo] = useState(null);
@@ -43,10 +42,32 @@ const MakeRequest = () => {
   const head1secret = process.env.NEXT_PUBLIC_HEAD_1_SECRET;
   const head2secret = process.env.NEXT_PUBLIC_HEAD_2_SECRET;
 
+  // useEffect(() => {
+  //   setUserID(user);
+  //   const { data: authListener } = supabase.auth.onAuthStateChange(
+  //     (event, session) => {
+  //       console.log(`Supbase auth event: ${event}`);
+  //       setUserID(session?.user ?? null);
+  //     }
+  //   );
+  //   // return () => {
+  //   //   authListener.unsubscribe();
+  //   // };
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
+
+  console.log("userid", user);
+
+  useEffect(() => {
+    if (user === null) {
+      router.reload();
+    }
+  }, [user]);
+
   useEffect(() => {
     if (!session) {
-     router.push('/')
-   }
+      router.push("/");
+    }
   }, [session]);
 
   useEffect(() => {
@@ -56,7 +77,6 @@ const MakeRequest = () => {
   async function getProfile() {
     try {
       //   setLoading(true);
-
       let { data, error, status } = await supabase
         .from("profiles")
         .select(`full_name, dept, matric_no, role`)
@@ -117,7 +137,7 @@ const MakeRequest = () => {
               </Text>
             </VStack>
           )}
-          {role === general && <StudentRequest />}
+          {role === general && <StudentRequest user={user} />}
           {role === head1secret && <HodPage />}
           {role === head2secret && <DeanPage />}
         </Box>

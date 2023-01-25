@@ -33,14 +33,14 @@ import "easymde/dist/easymde.min.css";
 const SimpleMDE = dynamic(() => import ('react-simplemde-editor'), {ssr: false});
 
 
-const AddDeleteCourses = () => {
+const AddDeleteCourses = ({userID, name, dept, matricNO}) => {
   const supabase = useSupabaseClient();
-  const session = useSession();
-  const user = useUser();
+  // const session = useSession();
+  // const user = useUser();
   const toast = useToast();
-  const [full_name, setFullname] = useState(null);
-  const [matric_no, setMatricNo] = useState(null);
-  const [dept, setDept] = useState(null);
+  // const [full_name, setFullname] = useState(null);
+  // const [matric_no, setMatricNo] = useState(null);
+  // const [dept, setDept] = useState(null);
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -58,35 +58,35 @@ const AddDeleteCourses = () => {
     };
   }, []);
 
-  useEffect(() => {
-    getProfile();
-  }, [session]);
+  // useEffect(() => {
+  //   getProfile();
+  // }, [session]);
 
-  async function getProfile() {
-    try {
-      //   setLoading(true);
-      let { data, error, status } = await supabase
-        .from("profiles")
-        .select(`full_name, dept, matric_no`)
-        .eq("id", user.id)
-        .single();
+  // async function getProfile() {
+  //   try {
+  //     //   setLoading(true);
+  //     let { data, error, status } = await supabase
+  //       .from("profiles")
+  //       .select(`full_name, dept, matric_no`)
+  //       .eq("id", user.id)
+  //       .single();
 
-      if (error && status !== 406) {
-        throw error;
-      }
+  //     if (error && status !== 406) {
+  //       throw error;
+  //     }
 
-      if (data) {
-        setFullname(data.full_name);
-        setMatricNo(data.matric_no);
-        setDept(data.dept);
-      }
-    } catch (error) {
-      alert("Error loading user data!");
-      console.log(error);
-    } finally {
-      //   setLoading(false);
-    }
-  }
+  //     if (data) {
+  //       setFullname(data.full_name);
+  //       setMatricNo(data.matric_no);
+  //       setDept(data.dept);
+  //     }
+  //   } catch (error) {
+  //     // alert("Error loading user data!");
+  //     console.log(error);
+  //   } finally {
+  //     //   setLoading(false);
+  //   }
+  // }
 
   const updateRequests = async () => {
  
@@ -96,10 +96,10 @@ const AddDeleteCourses = () => {
         {
           title,
           description,
-          user_id: user.id,
-          full_name,
+          user_id: userID,
+          name,
           dept,
-          matric_no,
+          matricNO,
           status: "processing",
           to: "hod",
         },

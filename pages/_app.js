@@ -6,13 +6,16 @@ import { useState } from "react";
 export default function App({ Component, pageProps }) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
 
+
   return (
     <SessionContextProvider
       supabaseClient={supabase}
       initialSession={pageProps.initialSession}>
-      <ChakraProvider>
-        <Component {...pageProps} />
-      </ChakraProvider>
+      {/* <UserProvider> */}
+        <ChakraProvider>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      {/* </UserProvider> */}
     </SessionContextProvider>
   );
 }

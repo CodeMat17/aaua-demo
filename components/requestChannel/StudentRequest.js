@@ -1,14 +1,63 @@
-import { Box, Divider, Flex, SimpleGrid, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Flex,
+  SimpleGrid,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import {
+  useSession,
+  useSupabaseClient,
+  useUser,
+} from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import RequestApproval from "../RequestApproval";
 import AddDeleteCourses from "../requestButtons/AddDeleteCourses";
 
+const StudentRequest = ({user}) => {
+  const supabase = useSupabaseClient();
+  const session = useSession();
+  // const user = useUser();
+  const [full_name, setFullname] = useState(null);
+  const [matric_no, setMatricNo] = useState(null);
+  const [dept, setDept] = useState(null);
 
-const StudentRequest = () => {
+  useEffect(() => {
+    getProfile();
+  }, [session]);
+
+  async function getProfile() {
+    try {
+      //   setLoading(true);
+      let { data, error, status } = await supabase
+        .from("profiles")
+        .select(`full_name, dept, matric_no`)
+        .eq("id", user.id)
+        .single();
+
+      if (error && status !== 406) {
+        throw error;
+      }
+
+      if (data) {
+        setFullname(data.full_name);
+        setMatricNo(data.matric_no);
+        setDept(data.dept);
+      }
+    } catch (error) {
+      // alert("Error loading user data!");
+      console.log(error);
+    } finally {
+      //   setLoading(false);
+    }
+  }
+
   const bgAlt = useColorModeValue("gray.200", "gray.800");
   const bgButton = useColorModeValue("gray.50", "gray.700");
-  const router = useRouter()
-  
+  const router = useRouter();
+
   return (
     <>
       <Box px='4' pt='8' pb='12' bg={bgAlt} rounded='md'>
@@ -54,7 +103,12 @@ const StudentRequest = () => {
               bg={bgButton}>
               Name Correction
             </Flex>
-            <AddDeleteCourses />
+            <AddDeleteCourses
+              userID={user.id}
+              name={full_name}
+              dept={dept}
+              matricNO={matric_no}
+            />
 
             <Flex
               cursor='pointer'
@@ -78,10 +132,12 @@ const StudentRequest = () => {
       <Box px='4' py='6'>
         <Text fontSize='lg'>Requests and Approvals</Text>
         <Divider mt='1' mb='2' />
-        <RequestApproval />
+        <RequestApproval
+          userID={user.id}
+        />
       </Box>
     </>
   );
-}
+};
 
-export default StudentRequest
+export default StudentRequest;

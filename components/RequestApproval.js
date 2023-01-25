@@ -7,9 +7,9 @@ import {
 import { useEffect, useState } from "react";
 import RequestApprovalCard from "./RequestApprovalCard";
 
-const RequestApproval = () => {
+const RequestApproval = ({userID}) => {
   const supabase = useSupabaseClient();
-  const user = useUser();
+  // const user = useUser();
   const session = useSession();
   const [loading, setLoading] = useState(false);
   const [requests, setRequests] = useState([]);
@@ -25,7 +25,7 @@ const RequestApproval = () => {
         .from("requests")
         .select("*")
         .order('created_at', {ascending: false})
-        .eq("user_id", user.id);
+        .eq("user_id", userID);
 
       if (error && status !== 406) {
         throw error;
