@@ -8,6 +8,7 @@ import {
   Text,
   useToast,
   VStack,
+  chakra,
 } from "@chakra-ui/react";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import Image from "next/image";
@@ -23,7 +24,7 @@ const Account = ({ session }) => {
   const router = useRouter();
   const toast = useToast();
   const [loading, setLoading] = useState(true);
-  const [full_name, setFullname] = useState(null);
+  const [full_name, setFullname] = useState("");
   const [dept, setDept] = useState(null);
   const [matric_no, setMatricNo] = useState(null);
   const [registered, setRegistered] = useState(null);
@@ -67,7 +68,7 @@ const Account = ({ session }) => {
     }
   }
 
-  async function updateProfile({ full_name, dept, matric_no }) {
+  async function updateProfile() {
     try {
       setLoading(true);
       const updates = {
@@ -146,59 +147,65 @@ const Account = ({ session }) => {
                   UPDATE YOUR PROFILE
                 </Text>
 
-                <FormControl pt='8'>
-                  <FormLabel fontSize='sm' mb='0'>
-                    Email
-                  </FormLabel>
-                  <Input
-                    id='email'
-                    type='email'
-                    value={session?.user?.email}
-                    disabled
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontSize='sm' mb='0'>
-                    Fullname
-                  </FormLabel>
-                  <Input
-                    id='fullname'
-                    type='text'
-                    value={full_name || ""}
-                    onChange={(e) => setFullname(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontSize='sm' mb='0'>
-                    Matric No.
-                  </FormLabel>
-                  <Input
-                    id='MatricNo'
-                    type='text'
-                    value={matric_no || ""}
-                    onChange={(e) => setMatricNo(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl pb='2'>
-                  <FormLabel fontSize='sm' mb='0'>
-                    Department
-                  </FormLabel>
-                  <Input
-                    id='department'
-                    type='text'
-                    value={dept || ""}
-                    onChange={(e) => setDept(e.target.value)}
-                  />
-                </FormControl>
+                <chakra.form
+                  w='full'
+                  onSubmit={updateProfile}>
+                  <FormControl pt='8'>
+                    <FormLabel fontSize='sm' mb='0'>
+                      Email
+                    </FormLabel>
+                    <Input
+                      id='email'
+                      type='email'
+                      value={session?.user?.email}
+                      disabled
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel fontSize='sm' mb='0'>
+                      Fullname
+                    </FormLabel>
+                    <Input
+                      id='fullname'
+                      type='text'
+                      value={full_name || ""}
+                      onChange={(e) => setFullname(e.target.value)}
+                    />
+                  </FormControl>
+                  <FormControl isRequired>
+                    <FormLabel fontSize='sm' mb='0'>
+                      Matric No.
+                    </FormLabel>
+                    <Input
+                      id='MatricNo'
+                      type='text'
+                      value={matric_no || ""}
+                      onChange={(e) => setMatricNo(e.target.value)}
+                    />
+                  </FormControl>
+                  <FormControl pb='2' isRequired>
+                    <FormLabel fontSize='sm' mb='0'>
+                      Department
+                    </FormLabel>
+                    <Input
+                      id='department'
+                      type='text'
+                      value={dept || ""}
+                      onChange={(e) => setDept(e.target.value)}
+                    />
+                  </FormControl>
 
-                <Button
-                  onClick={() => updateProfile({ full_name, dept, matric_no })}
+                  <Button
+                    // onClick={() =>
+                    //   updateProfile({ full_name, dept, matric_no })
+                    // }
+                      type="submit"
                     isLoading={loading}
-                    isDisabled={!full_name.trim() || !dept.trim() || !matric_no.trim()}
-                  colorScheme='blue'
-                  w='full'>
-                  UPDATE PROFILE
-                </Button>
+                    colorScheme='blue'
+                    w='full'>
+                    UPDATE PROFILE
+                  </Button>
+                </chakra.form>
                 <Button
                   onClick={() => supabase.auth.signOut()}
                   colorScheme='red'
