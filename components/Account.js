@@ -147,10 +147,8 @@ const Account = ({ session }) => {
                   UPDATE YOUR PROFILE
                 </Text>
 
-                <chakra.form
-                  w='full'
-                  onSubmit={updateProfile}>
-                  <FormControl pt='8'>
+                <chakra.form w='full' onSubmit={updateProfile}>
+                  <FormControl pt='8' mb='4'>
                     <FormLabel fontSize='sm' mb='0'>
                       Email
                     </FormLabel>
@@ -161,7 +159,7 @@ const Account = ({ session }) => {
                       disabled
                     />
                   </FormControl>
-                  <FormControl isRequired>
+                  <FormControl mb='4' isRequired>
                     <FormLabel fontSize='sm' mb='0'>
                       Fullname
                     </FormLabel>
@@ -172,7 +170,7 @@ const Account = ({ session }) => {
                       onChange={(e) => setFullname(e.target.value)}
                     />
                   </FormControl>
-                  <FormControl isRequired>
+                  <FormControl mb='4' isRequired>
                     <FormLabel fontSize='sm' mb='0'>
                       Matric No.
                     </FormLabel>
@@ -183,7 +181,7 @@ const Account = ({ session }) => {
                       onChange={(e) => setMatricNo(e.target.value)}
                     />
                   </FormControl>
-                  <FormControl pb='2' isRequired>
+                  <FormControl mb='4' pb='2' isRequired>
                     <FormLabel fontSize='sm' mb='0'>
                       Department
                     </FormLabel>
@@ -199,7 +197,8 @@ const Account = ({ session }) => {
                     // onClick={() =>
                     //   updateProfile({ full_name, dept, matric_no })
                     // }
-                      type="submit"
+                    mb='4'
+                    type='submit'
                     isLoading={loading}
                     colorScheme='blue'
                     w='full'>
