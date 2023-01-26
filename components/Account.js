@@ -26,6 +26,7 @@ const Account = ({ session }) => {
   const [full_name, setFullname] = useState(null);
   const [dept, setDept] = useState(null);
   const [matric_no, setMatricNo] = useState(null);
+  const [registered, setRegistered] = useState(null);
 
   useEffect(() => {
     getProfile();
@@ -36,7 +37,7 @@ const Account = ({ session }) => {
       setLoading(true);
       let { data, error, status } = await supabase
         .from("profiles")
-        .select(`full_name, dept, matric_no`)
+        .select(`full_name, dept, matric_no, registered`)
         .eq("id", user.id)
         .single();
 
@@ -48,7 +49,9 @@ const Account = ({ session }) => {
         setFullname(data.full_name);
         setDept(data.dept);
         setMatricNo(data.matric_no);
+        setRegistered(data.registered);
       }
+     
     } catch (error) {
       toast({
         title: "Error!",
@@ -78,6 +81,15 @@ const Account = ({ session }) => {
       let { error } = await supabase.from("profiles").upsert(updates);
       if (error) throw error;
 
+      const { data } = await supabase
+        .from("profiles")
+        .update({ registered: true })
+        .eq("id", user.id);
+      // if (data) {
+      //   setRegistered(data.registered)
+      console.log("data", data);
+      // }
+
       toast({
         title: "Updated!",
         description: "We've successfully updated your profile data.",
@@ -86,6 +98,7 @@ const Account = ({ session }) => {
         position: "top",
         isClosable: true,
       });
+      router.reload()
     } catch (error) {
       toast({
         title: "Error!",
@@ -105,7 +118,7 @@ const Account = ({ session }) => {
     <>
       <NavHeader />
 
-      <Box maxW='sm' mx='auto'>
+      <Box w='full' minH='80vh'>
         {loading ? (
           <VStack py='20'>
             <Spinner />
@@ -115,7 +128,7 @@ const Account = ({ session }) => {
           </VStack>
         ) : (
           <>
-            {full_name === null ? (
+            {!registered ? (
               <VStack p='8' pos='relative' maxW='sm' mx='auto'>
                 <Box ml='4'>
                   <Image
@@ -180,7 +193,8 @@ const Account = ({ session }) => {
 
                 <Button
                   onClick={() => updateProfile({ full_name, dept, matric_no })}
-                  isLoading={loading}
+                    isLoading={loading}
+                    isDisabled={!full_name.trim() || !dept.trim() || !matric_no.trim()}
                   colorScheme='blue'
                   w='full'>
                   UPDATE PROFILE
@@ -193,7 +207,7 @@ const Account = ({ session }) => {
                 </Button>
               </VStack>
             ) : (
-             <RequestPage session={session} />
+              <RequestPage session={session} />
             )}
           </>
         )}

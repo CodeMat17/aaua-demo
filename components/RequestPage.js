@@ -65,7 +65,7 @@ const RequestPage = ({ session }) => {
           <Text letterSpacing='1px'>Fetching data, wait</Text>
         </VStack>
       ) : (
-        <Box maxW='6xl' mx='auto'>
+        <Box w='full'>
           <HStack ml='-1' spacing={[-1, 2]}>
             <Image
               alt='id logo'
